@@ -4,16 +4,9 @@
 
 #include <iostream>
 
-namespace global {
-    namespace geo {}
-    namespace input_reader {}
-    namespace transport_catalogue {}
-    namespace stat_reader {}
-}
-
 int main() {
-    global::transport_catalogue::TransportCatalogue transport_catalogue;
-    global::input_reader::ParseQuery(std::cin, transport_catalogue);
-    global::stat_reader::GetDataBaseInfo(std::cin, transport_catalogue, std::cout);
+    transport_catalogue_global_namespace::transport_catalogue::TransportCatalogue transport_catalogue;
+    transport_catalogue_global_namespace::input_reader::ParseQuery(std::cin, transport_catalogue);
+    transport_catalogue_global_namespace::stat_reader::GetDataBaseInfo(std::cin, transport_catalogue, std::cout);
     return 0;
 }

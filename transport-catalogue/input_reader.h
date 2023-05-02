@@ -6,16 +6,8 @@
 #include <vector>
 #include <iostream>
 
-using global::transport_catalogue::TransportCatalogue;
-
-namespace global::input_reader {
+namespace transport_catalogue_global_namespace::input_reader {
     void CutSpaces(std::istringstream& stream);
 
-    void ParseQuery(std::istream& input, TransportCatalogue& transport_catalogue);
-
-    void ReadStopWithoutDistances(std::istringstream& stream, TransportCatalogue& transport_catalogue);
-
-    void ReadStopDistances(std::istringstream& stream, TransportCatalogue& transport_catalogue);
-
-    void ReadBus(std::istringstream& stream, TransportCatalogue& transport_catalogue);
+    void ParseQuery(std::istream& input, transport_catalogue::TransportCatalogue& transport_catalogue);
 }
