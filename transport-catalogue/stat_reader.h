@@ -5,7 +5,7 @@
 #include <vector>
 #include <iostream>
 
-namespace transport_catalogue_global_namespace::stat_reader {
+namespace transport_catalogue::stat_reader {
     void GetDataBaseInfo(std::istream& input, const transport_catalogue::TransportCatalogue& transport_catalogue, std::ostream& out = std::cout);
     void GetBusesInfo(std::istream& input, const transport_catalogue::TransportCatalogue& transport_catalogue, std::ostream& out);
     void GetStopsInfo(std::istream& input, const transport_catalogue::TransportCatalogue& transport_catalogue, std::ostream& out);

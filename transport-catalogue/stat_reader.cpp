@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-namespace transport_catalogue_global_namespace::stat_reader {
+namespace transport_catalogue::stat_reader {
     void GetDataBaseInfo(std::istream &input,const transport_catalogue::TransportCatalogue &transport_catalogue,std::ostream &out) {
 
         int str;

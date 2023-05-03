@@ -1,6 +1,6 @@
 #include "transport_catalogue.h"
 
-namespace transport_catalogue_global_namespace::transport_catalogue {
+namespace transport_catalogue {
 
     void TransportCatalogue::AddStop(std::string_view stop, geo::Coordinates coordinates) {
         std::string stop_name(stop);

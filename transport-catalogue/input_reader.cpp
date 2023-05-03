@@ -4,7 +4,7 @@
 #include <sstream>
 #include <algorithm>
 
-namespace transport_catalogue_global_namespace::input_reader {
+namespace transport_catalogue::input_reader {
 
     void CutSpaces(std::istringstream& stream) {
         while (stream.peek() == ' ') {

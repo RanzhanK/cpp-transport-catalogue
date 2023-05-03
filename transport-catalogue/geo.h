@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-namespace transport_catalogue_global_namespace::geo {
+namespace transport_catalogue::geo {
 
     struct Coordinates {
         double lat;

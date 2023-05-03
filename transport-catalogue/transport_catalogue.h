@@ -14,7 +14,7 @@
 #include <unordered_set>
 #include <unordered_map>
 
-namespace transport_catalogue_global_namespace::transport_catalogue {
+namespace transport_catalogue {
 
     struct Stop {
         std::string name;
@@ -47,7 +47,7 @@ namespace transport_catalogue_global_namespace::transport_catalogue {
         };
         std::deque<Stop> stops_;
         std::deque<Bus> buses_;
-        std::unordered_map<std::string, const Stop*> name_to_stop_;
+        std::unordered_map<std::string_view, const Stop*> name_to_stop_;
         std::unordered_map<std::string_view, const Bus*> name_to_bus_;
         std::unordered_map<const Stop*, std::unordered_set<const Bus*>> stop_to_buses_;
         std::unordered_map<std::pair<const Stop*, const Stop*>, int, Hasher> distances_;
