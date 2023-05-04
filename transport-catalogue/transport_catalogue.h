@@ -9,6 +9,7 @@
 #include <string>
 #include <cassert>
 #include <iomanip>
+#include <optional>
 #include <iostream>
 #include <string_view>
 #include <unordered_set>
@@ -26,6 +27,13 @@ namespace transport_catalogue {
         std::vector<const Stop*> stops;
     };
 
+    struct DataBusInfo {
+        size_t route_size;
+        size_t unique_stops;
+        int length;
+        double curvature;
+    };
+
     class TransportCatalogue {
     public:
         void AddStop(std::string_view stop, geo::Coordinates coordinates);
@@ -34,7 +42,7 @@ namespace transport_catalogue {
         int GetDistanceBetweenStops(std::string_view from, std::string_view to) const;
         std::unordered_set<const Bus*> GetBusesForStop(std::string_view stop) const;
         bool StopCheck(std::string_view stop) const;
-        const Bus& BusInfo(std::string_view bus) const;
+        DataBusInfo BusInfo(const std::string& query) const;
 
     private:
         struct Hasher {

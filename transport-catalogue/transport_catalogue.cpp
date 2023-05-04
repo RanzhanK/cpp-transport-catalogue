@@ -55,18 +55,36 @@ namespace transport_catalogue {
         return distances_.at({to_ptr, from_ptr});
     }
 
-    const Bus& TransportCatalogue::BusInfo(std::string_view bus) const {
-
-        static const Bus empty_bus;
-        std::string bus_name(bus);
-
-        if (name_to_bus_.count(bus_name) == 0) {
-            return empty_bus;
-        }
-        return *(name_to_bus_.at(bus_name));
-    }
-
     bool TransportCatalogue::StopCheck(std::string_view stop) const {
         return name_to_stop_.count(std::string(stop));
+    }
+
+    DataBusInfo TransportCatalogue::BusInfo(const std::string& query) const {
+        DataBusInfo matched_bus{};
+
+        if (name_to_bus_.count(query) == 0) {
+            return {};
+        }
+        Bus bus = *(name_to_bus_.at(query));
+        size_t route_size = bus.stops.size();
+        std::unordered_set<const Stop *> set_unique_stops(bus.stops.begin(), bus.stops.end());
+        size_t unique_stops = set_unique_stops.size();
+
+        double geo_length = 0;
+        int length = 0;
+
+        for (int i = 1; i < route_size; ++i) {
+            const Stop *prev_stop = bus.stops[i - 1];
+            const Stop *cur_stop = bus.stops[i];
+            geo_length += ComputeDistance(prev_stop->coordinates, cur_stop->coordinates);
+            length += GetDistanceBetweenStops(prev_stop->name, cur_stop->name);
+        }
+
+        matched_bus.route_size = route_size;
+        matched_bus.unique_stops = unique_stops;
+        matched_bus.length = length;
+        matched_bus.curvature = length / geo_length;;
+
+        return matched_bus;
     }
 }

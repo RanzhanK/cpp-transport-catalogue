@@ -34,32 +34,16 @@ namespace transport_catalogue::stat_reader {
 
         out << "Bus " << query << ": ";
 
-        transport_catalogue::Bus bus = transport_catalogue.BusInfo(query);
+        DataBusInfo bus_inf = transport_catalogue.BusInfo(query);
 
-        if (bus.stops.empty()) {
+        if (bus_inf.route_size == 0 && bus_inf.unique_stops == 0 && bus_inf.length == 0 && bus_inf.curvature == 0){
             out << "not found" << std::endl;
             return;
+        } else {
+            out << bus_inf.route_size << " stops on route, " << bus_inf.unique_stops << " unique stops, " << bus_inf.length
+                << " route length, "
+                << std::setprecision(6) << bus_inf.curvature << " curvature" << std::endl;
         }
-
-        size_t route_size = bus.stops.size();
-
-        std::unordered_set<const transport_catalogue::Stop *> set_unique_stops(bus.stops.begin(),bus.stops.end());
-        size_t unique_stops = set_unique_stops.size();
-
-        double geo_length = 0;
-        int length = 0;
-
-        for (int i = 1; i < route_size; ++i) {
-            const transport_catalogue::Stop *prev_stop = bus.stops[i - 1];
-            const transport_catalogue::Stop *cur_stop = bus.stops[i];
-            geo_length += ComputeDistance(prev_stop->coordinates, cur_stop->coordinates);
-            length += transport_catalogue.GetDistanceBetweenStops(prev_stop->name, cur_stop->name);
-        }
-
-        double curvature = length / geo_length;
-        out << route_size << " stops on route, " << unique_stops << " unique stops, " << length
-            << " route length, "
-            << std::setprecision(6) << curvature << " curvature" << std::endl;
     }
 
     void GetStopsInfo(std::istream& input, const transport_catalogue::TransportCatalogue& transport_catalogue, std::ostream& out) {
