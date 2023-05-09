@@ -1,12 +1,19 @@
-#include "stat_reader.h"
-#include "input_reader.h"
-#include "transport_catalogue.h"
-
-#include <iostream>
+#include "json_reader.h"
+#include "map_renderer.h"
+#include "request_handler.h"
 
 int main() {
-    transport_catalogue::TransportCatalogue transport_catalogue;
-    transport_catalogue::input_reader::ParseQuery(std::cin, transport_catalogue);
-    transport_catalogue::stat_reader::GetDataBaseInfo(std::cin, transport_catalogue, std::cout);
-    return 0;
+    std::vector<StatRequest> stat_request;
+    RenderSettings render_settings;
+    TransportCatalogue catalogue;
+
+    JSONReader json_reader;
+    request_handler::RequestHandler request_handler;
+
+    json_reader = JSONReader(std::cin);
+    json_reader.Parse(catalogue, stat_request, render_settings);
+
+    request_handler = request_handler::RequestHandler();
+    request_handler.ExecuteQueries(catalogue, stat_request, render_settings);
+    transport_catalogue::detail::json::Print(request_handler.GetDocument(), std::cout);
 }
