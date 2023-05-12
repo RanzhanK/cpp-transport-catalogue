@@ -60,7 +60,7 @@ namespace transport_catalogue {
         return unique_stops;
     }
 
-    size_t TransportCatalogue::GetDistanceBetweenStops(const Stop *stop1, const Stop *stop2) {
+    const size_t TransportCatalogue::GetDistanceBetweenStops(const Stop *stop1, const Stop *stop2) {
         if (distance_to_stop.empty()) {
             return 0;
         }

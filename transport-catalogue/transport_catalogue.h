@@ -27,7 +27,7 @@ namespace transport_catalogue {
 
         void SetDistanceBetweenStops(const std::vector<Distance> &distances);
 
-        size_t GetDistanceBetweenStops(const Stop *stop1, const Stop *stop2);
+        const size_t GetDistanceBetweenStops(const Stop *stop1, const Stop *stop2);
 
         std::unordered_set<const Bus *> GetBusesForStop(const Stop *stop);
 
