@@ -4,41 +4,37 @@
 #include "map_renderer.h"
 #include "transport_catalogue.h"
 
-namespace transport_catalogue {
-    namespace detail {
-        namespace json {
+namespace json {
 
-            class JSONReader {
-            public:
-                JSONReader() = default;
+    class JSONReader {
+    public:
+        JSONReader() = default;
 
-                JSONReader(Document doc);
+        explicit JSONReader(Document doc);
 
-                JSONReader(std::istream &input);
+        explicit JSONReader(std::istream &input);
 
-                void ParseNodeBase(const Node &root, TransportCatalogue &catalogue);
+        void ParseNodeBase(const Node &root, transport_catalogue::TransportCatalogue &catalogue);
 
-                void ParseNodeStat(const Node &root, std::vector<StatRequest> &stat_request);
+        void ParseNodeStat(const Node &root, std::vector<StatRequest> &stat_request);
 
-                void ParseNodeRender(const Node &node, map_renderer::RenderSettings &render_settings);
+        void ParseNodeRender(const Node &node, map_renderer::RenderSettings &render_settings);
 
-                void ParseNode(const Node &root, TransportCatalogue &catalogue, std::vector<StatRequest> &stat_request,
-                               map_renderer::RenderSettings &render_settings);
+        void ParseNode(const Node &root, transport_catalogue::TransportCatalogue &catalogue, std::vector<StatRequest> &stat_request,
+                       map_renderer::RenderSettings &render_settings);
 
-                void Parse(TransportCatalogue &catalogue, std::vector<StatRequest> &stat_request,
-                           map_renderer::RenderSettings &render_settings);
+        void Parse(transport_catalogue::TransportCatalogue &catalogue, std::vector<StatRequest> &stat_request,
+                   map_renderer::RenderSettings &render_settings);
 
-                Stop ParseNodeStop(Node &node);
+        Stop ParseNodeStop(Node &node);
 
-                Bus ParseNodeBus(Node &node, TransportCatalogue &catalogue);
+        Bus ParseNodeBus(Node &node, transport_catalogue::TransportCatalogue &catalogue);
 
-                std::vector<Distance> ParseNodeDistances(Node &node, TransportCatalogue &catalogue);
+        std::vector<Distance> ParseNodeDistances(Node &node, transport_catalogue::TransportCatalogue &catalogue);
 
-                const Document &GetDocument() const;
+        const Document &GetDocument() const;
 
-            private:
-                Document document_;
-            };
-        }
-    }
+    private:
+        Document document_;
+    };
 }

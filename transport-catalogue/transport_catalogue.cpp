@@ -20,7 +20,7 @@ namespace transport_catalogue {
         bus_buf->route_length = GetDistanceToBus(bus_buf);
     }
 
-    Bus *TransportCatalogue::FindBus(std::string_view bus_name) {
+    Bus *TransportCatalogue::FindBus(const std::string_view bus_name) {
         if (name_to_bus_.empty()) {
             return nullptr;
         }
@@ -33,7 +33,7 @@ namespace transport_catalogue {
         }
     }
 
-    Stop *TransportCatalogue::FindStop(std::string_view stop_name) {
+    Stop *TransportCatalogue::FindStop(const std::string_view stop_name) {
         if (name_to_stop_.empty()) {
             return nullptr;
         }
@@ -52,7 +52,7 @@ namespace transport_catalogue {
         }
     }
 
-    std::unordered_set<const Bus *> TransportCatalogue::GetBusesForStop(Stop *stop) {
+    std::unordered_set<const Bus *> TransportCatalogue::GetBusesForStop(const Stop *stop) {
         std::unordered_set<const Bus *> unique_stops;
 
         unique_stops.insert(stop->buses.begin(), stop->buses.end());
@@ -90,7 +90,7 @@ namespace transport_catalogue {
         return name_to_stop_;
     }
 
-    std::unordered_set<const Stop *> TransportCatalogue::GetUniqStops(Bus *bus) {
+    std::unordered_set<const Stop *> TransportCatalogue::GetUniqStops(const Bus *bus) {
         std::unordered_set<const Stop *> unique_stops;
 
         unique_stops.insert(bus->stops.begin(), bus->stops.end());
@@ -98,7 +98,7 @@ namespace transport_catalogue {
         return unique_stops;
     }
 
-    double TransportCatalogue::GetLength(Bus *bus) {
+    double TransportCatalogue::GetLength(const Bus *bus) {
         return transform_reduce(
                 next(bus->stops.begin()),
                 bus->stops.end(),
@@ -111,7 +111,7 @@ namespace transport_catalogue {
                 });
     }
 
-    size_t TransportCatalogue::GetDistanceToBus(Bus *bus) {
+    size_t TransportCatalogue::GetDistanceToBus(const Bus *bus) {
         size_t distance = 0;
         auto stops_size = bus->stops.size() - 1;
         for (int i = 0; i < static_cast<int>(stops_size); i++) {

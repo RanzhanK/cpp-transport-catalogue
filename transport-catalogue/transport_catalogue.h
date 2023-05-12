@@ -21,25 +21,25 @@ namespace transport_catalogue {
 
         void AddBus(Bus &&bus);
 
-        Bus *FindBus(std::string_view bus_name);
+        Bus *FindBus(const std::string_view bus_name);
 
-        Stop *FindStop(std::string_view stop_name);
+        Stop *FindStop(const std::string_view stop_name);
 
         void SetDistanceBetweenStops(const std::vector<Distance> &distances);
 
         size_t GetDistanceBetweenStops(const Stop *stop1, const Stop *stop2);
 
-        std::unordered_set<const Bus *> GetBusesForStop(Stop *stop);
+        std::unordered_set<const Bus *> GetBusesForStop(const Stop *stop);
 
         std::unordered_map<std::string_view, Bus *> GetAllBuses() const;
 
         std::unordered_map<std::string_view, Stop *> GetAllStops() const;
 
-        std::unordered_set<const Stop *> GetUniqStops(Bus *bus);
+        std::unordered_set<const Stop *> GetUniqStops(const Bus *bus);
 
-        double GetLength(Bus *bus);
+        double GetLength(const Bus *bus);
 
-        size_t GetDistanceToBus(Bus *bus);
+        size_t GetDistanceToBus(const Bus *bus);
 
     private:
         struct Hasher {

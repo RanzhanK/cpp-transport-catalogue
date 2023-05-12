@@ -15,5 +15,5 @@ int main() {
 
     request_handler = request_handler::RequestHandler();
     request_handler.ExecuteQueries(catalogue, stat_request, render_settings);
-    transport_catalogue::detail::json::Print(request_handler.GetDocument(), std::cout);
+    json::Print(request_handler.GetDocument(), std::cout);
 }

@@ -9,8 +9,6 @@
 #include "svg.h"
 #include "domain.h"
 
-using namespace domain;
-
 namespace map_renderer {
 
     inline const double EPSILON = 1e-6;
@@ -55,7 +53,7 @@ namespace map_renderer {
     class MapRenderer {
 
     public:
-        MapRenderer(RenderSettings &render_settings);
+        explicit MapRenderer(const RenderSettings &render_settings);
 
         SphereProjector GetSphereProjector(const std::vector<geo::Coordinates> &points) const;
 
@@ -84,13 +82,13 @@ namespace map_renderer {
 
         void SetStopsTextColorProperties(svg::Text &text, const std::string &name, svg::Point position) const;
 
-        void AddLine(std::vector<std::pair<Bus *, int>> &buses_palette);
+        void AddLine(std::vector<std::pair<domain::Bus *, int>> &buses_palette);
 
-        void AddBusesName(std::vector<std::pair<Bus *, int>> &buses_palette);
+        void AddBusesName(std::vector<std::pair<domain::Bus *, int>> &buses_palette);
 
-        void AddStopsCircle(std::vector<Stop *> &stops_name);
+        void AddStopsCircle(std::vector<domain::Stop *> &stops_name);
 
-        void AddStopsName(std::vector<Stop *> &stops_name);
+        void AddStopsName(std::vector<domain::Stop *> &stops_name);
 
         void GetStreamMap(std::ostream &stream_);
 

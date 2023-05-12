@@ -6,9 +6,24 @@
 
 using namespace map_renderer;
 using namespace transport_catalogue;
-using namespace transport_catalogue::detail::json;
+using namespace json;
 
 namespace request_handler {
+
+    struct BusQueryResult {
+        std::string_view name;
+        bool not_found;
+        int stops_on_route;
+        int unique_stops;
+        int route_length;
+        double curvature;
+    };
+
+    struct StopQueryResult {
+        std::string_view name;
+        bool not_found;
+        std::vector<std::string> buses_name;
+    };
 
     class RequestHandler {
     public:

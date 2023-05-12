@@ -36,19 +36,4 @@ namespace domain {
         const Stop* end;
         int distance;
     };
-
-    struct BusQueryResult {
-        std::string_view name;
-        bool not_found;
-        int stops_on_route;
-        int unique_stops;
-        int route_length;
-        double curvature;
-    };
-
-    struct StopQueryResult {
-        std::string_view name;
-        bool not_found;
-        std::vector <std::string> buses_name;
-    };
 }
