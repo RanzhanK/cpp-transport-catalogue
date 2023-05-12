@@ -21,9 +21,9 @@ namespace transport_catalogue {
 
         void AddBus(Bus &&bus);
 
-        Bus *FindBus(const std::string_view bus_name);
+        const Bus *FindBus(const std::string_view bus_name);
 
-        Stop *FindStop(const std::string_view stop_name);
+        const Stop *FindStop(const std::string_view stop_name);
 
         void SetDistanceBetweenStops(const std::vector<Distance> &distances);
 

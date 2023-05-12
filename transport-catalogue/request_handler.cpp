@@ -95,7 +95,7 @@ namespace request_handler {
         if (buses.size() > 0) {
 
             for (std::string_view bus_name: GetSortBusesNames(catalogue)) {
-                Bus *bus_info = catalogue.FindBus(bus_name);
+                Bus *bus_info = const_cast<Bus *>(catalogue.FindBus(bus_name));
 
                 if (bus_info) {
                     if (bus_info->stops.size() > 0) {
@@ -129,7 +129,7 @@ namespace request_handler {
             std::sort(stops_name.begin(), stops_name.end());
 
             for (std::string_view stop_name: stops_name) {
-                Stop *stop = catalogue.FindStop(stop_name);
+                Stop *stop = const_cast<Stop *>(catalogue.FindStop(stop_name));
                 if (stop) {
                     stops_sort.push_back(stop);
                 }
@@ -180,7 +180,7 @@ namespace request_handler {
 
     BusQueryResult RequestHandler::BusQuery(TransportCatalogue &catalogue, std::string_view bus_name) {
         BusQueryResult bus_info;
-        Bus *bus = catalogue.FindBus(bus_name);
+        Bus *bus = const_cast<Bus *>(catalogue.FindBus(bus_name));
 
         if (bus != nullptr) {
             bus_info.name = bus->name;
@@ -201,7 +201,7 @@ namespace request_handler {
     StopQueryResult RequestHandler::StopQuery(TransportCatalogue &catalogue, std::string_view stop_name) {
         std::unordered_set<const Bus *> unique_buses;
         StopQueryResult stop_info;
-        Stop *stop = catalogue.FindStop(stop_name);
+        Stop *stop = const_cast<Stop *>(catalogue.FindStop(stop_name));
 
         if (stop != NULL) {
 

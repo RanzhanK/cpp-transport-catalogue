@@ -62,7 +62,8 @@ namespace json {
                 bus_stops = bus_node.at("stops").AsArray();
 
                 for (Node stop: bus_stops) {
-                    bus.stops.push_back(catalogue.FindStop(stop.AsString()));
+                    auto const x = catalogue.FindStop(stop.AsString());
+                    bus.stops.push_back(const_cast<Stop *&&>(x));
                 }
 
                 if (!bus.is_roundtrip) {
