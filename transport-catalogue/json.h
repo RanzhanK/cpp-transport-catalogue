@@ -12,32 +12,21 @@ namespace json {
 
     using Dict = std::map<std::string, Node>;
     using Array = std::vector<Node>;
+    using Number = std::variant<int, double>;
 
     class ParsingError : public std::runtime_error {
     public:
         using runtime_error::runtime_error;
     };
 
-    class Node {
+    class Node : private std::variant<std::nullptr_t, int, double, std::string, bool, Array, Dict> {
     public:
+        using variant::variant;
 
-        using Value = std::variant<std::nullptr_t, Array, Dict, bool, int, double, std::string>;
+        using Value = variant;
 
-        Node() = default;
+        Node(Value& value);
 
-        Node(bool value);
-
-        Node(Array array);
-
-        Node(Dict map);
-
-        Node(int value);
-
-        Node(std::string value);
-
-        Node(std::nullptr_t);
-
-        Node(double value);
 
         const Array &AsArray() const;
 
@@ -50,6 +39,7 @@ namespace json {
         bool AsBool() const;
 
         const std::string &AsString() const;
+
 
         bool IsNull() const;
 
@@ -67,42 +57,31 @@ namespace json {
 
         bool IsMap() const;
 
+        Value& GetValue();
+
         const Value &GetValue() const;
 
-    private:
-        Value value_;
     };
 
-    inline bool operator==(const Node &lhs, const Node &rhs) {
-        return lhs.GetValue() == rhs.GetValue();
-    }
-
-    inline bool operator!=(const Node &lhs, const Node &rhs) {
-        return !(lhs == rhs);
-    }
+    bool operator==(const Node& lhs, const Node& rhs);
+    bool operator!=(const Node& lhs, const Node& rhs);
 
     class Document {
     public:
         Document() = default;
-
         explicit Document(Node root);
 
-        const Node &GetRoot() const;
+        const Node& GetRoot() const;
 
     private:
         Node root_;
     };
 
-    inline bool operator==(const Document &lhs, const Document &rhs) {
-        return lhs.GetRoot() == rhs.GetRoot();
-    }
+    bool operator==(const Document& lhs, const Document& rhs);
+    bool operator!=(const Document& lhs, const Document& rhs);
 
-    inline bool operator!=(const Document &lhs, const Document &rhs) {
-        return !(lhs == rhs);
-    }
+    Document Load(std::istream& input);
 
-    Document Load(std::istream &input);
-
-    void Print(const Document &document, std::ostream &output);
+    void Print(const Document& doc, std::ostream& output);
 
 }
