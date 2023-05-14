@@ -4,11 +4,11 @@
 #include "map_renderer.h"
 #include "transport_catalogue.h"
 
-using namespace map_renderer;
+using namespace transport_catalogue::map_renderer;
+using namespace transport_catalogue::json;
 using namespace transport_catalogue;
-using namespace json;
 
-namespace request_handler {
+namespace transport_catalogue::request_handler {
 
     class RequestHandler {
     public:

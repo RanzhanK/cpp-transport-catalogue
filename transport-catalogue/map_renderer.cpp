@@ -1,6 +1,6 @@
 #include "map_renderer.h"
 
-namespace map_renderer {
+namespace transport_catalogue::map_renderer {
 
     bool SphereProjector::IsZero(double value) {
         return std::abs(value) < EPSILON;
@@ -140,12 +140,12 @@ namespace map_renderer {
         text.SetFillColor("black");
     }
 
-    void MapRenderer::AddLine(std::vector<std::pair<domain::Bus *, int>> &buses_palette) {
+    void MapRenderer::AddLine(std::vector<std::pair<Bus *, int>> &buses_palette) {
         std::vector<geo::Coordinates> stops_geo_coords;
 
         for (auto [bus, palette]: buses_palette) {
 
-            for (domain::Stop *stop: bus->stops) {
+            for (Stop *stop: bus->stops) {
                 geo::Coordinates coordinates;
                 coordinates.latitude = stop->latitude;
                 coordinates.longitude = stop->longitude;
@@ -171,13 +171,13 @@ namespace map_renderer {
         }
     }
 
-    void MapRenderer::AddBusesName(std::vector<std::pair<domain::Bus *, int>> &buses_palette) {
+    void MapRenderer::AddBusesName(std::vector<std::pair<Bus *, int>> &buses_palette) {
         std::vector<geo::Coordinates> stops_geo_coords;
         bool bus_empty = true;
 
         for (auto [bus, palette]: buses_palette) {
 
-            for (domain::Stop *stop: bus->stops) {
+            for (Stop *stop: bus->stops) {
                 geo::Coordinates coordinates;
                 coordinates.latitude = stop->latitude;
                 coordinates.longitude = stop->longitude;
@@ -239,11 +239,11 @@ namespace map_renderer {
         }
     }
 
-    void MapRenderer::AddStopsCircle(std::vector<domain::Stop *> &stops) {
+    void MapRenderer::AddStopsCircle(std::vector<Stop *> &stops) {
         std::vector<geo::Coordinates> stops_geo_coords;
         svg::Circle icon;
 
-        for (domain::Stop *stop_info: stops) {
+        for (Stop *stop_info: stops) {
 
             if (stop_info) {
                 geo::Coordinates coordinates;
@@ -257,13 +257,13 @@ namespace map_renderer {
         }
     }
 
-    void MapRenderer::AddStopsName(std::vector<domain::Stop *> &stops) {
+    void MapRenderer::AddStopsName(std::vector<Stop *> &stops) {
         std::vector<geo::Coordinates> stops_geo_coords;
 
         svg::Text svg_stop_name;
         svg::Text svg_stop_name_title;
 
-        for (domain::Stop *stop_info: stops) {
+        for (Stop *stop_info: stops) {
 
             if (stop_info) {
                 geo::Coordinates coordinates;

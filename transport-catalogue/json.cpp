@@ -2,13 +2,7 @@
 
 using namespace std::literals;
 
-namespace json {
-
-// ---> Node
-
-    Node::Node(Value &value) {
-        this->swap(value);
-    }
+namespace transport_catalogue::json {
 
     bool Node::IsInt() const {
         return std::holds_alternative<int>(*this);
@@ -38,7 +32,7 @@ namespace json {
         return std::holds_alternative<Array>(*this);
     }
 
-    bool Node::IsMap() const {
+    bool Node::IsDict() const {
         return std::holds_alternative<Dict>(*this);
     }
 
@@ -77,8 +71,8 @@ namespace json {
         return std::get<Array>(*this);
     }
 
-    const Dict &Node::AsMap() const {
-        if (!IsMap()) {
+    const Dict &Node::AsDict() const {
+        if (!IsDict()) {
             throw std::logic_error("data is not a map"s);
         }
         return std::get<Dict>(*this);
@@ -91,9 +85,6 @@ namespace json {
     const Node::Value &Node::GetValue() const {
         return *this;
     }
-
-// <--- Node
-
 
     bool operator==(const Node &lhs, const Node &rhs) {
         return lhs.GetValue() == rhs.GetValue();
@@ -129,23 +120,19 @@ namespace json {
             if (input.peek() == '-') {
                 read_char();
             }
-            // Парсим целую часть числа
             if (input.peek() == '0') {
                 read_char();
-                // После 0 в JSON не могут идти другие цифры
             } else {
                 read_digits();
             }
 
             bool is_int = true;
-            // Парсим дробную часть числа
             if (input.peek() == '.') {
                 read_char();
                 read_digits();
                 is_int = false;
             }
 
-            // Парсим экспоненциальную часть числа
             if (int ch = input.peek(); ch == 'e' || ch == 'E') {
                 read_char();
                 if (ch = input.peek(); ch == '+' || ch == '-') {
@@ -157,12 +144,9 @@ namespace json {
 
             try {
                 if (is_int) {
-                    // Сначала пробуем преобразовать строку в int
                     try {
                         return std::stoi(parsed_num);
                     } catch (...) {
-                        // В случае неудачи, например, при переполнении,
-                        // код ниже попробует преобразовать строку в double
                     }
                 }
                 return std::stod(parsed_num);
@@ -171,31 +155,24 @@ namespace json {
             }
         }
 
-// Считывает содержимое строкового литерала JSON-документа
-// Функцию следует использовать после считывания открывающего символа ":
         std::string LoadString(std::istream &input) {
             auto it = std::istreambuf_iterator<char>(input);
             auto end = std::istreambuf_iterator<char>();
             std::string s;
             while (true) {
                 if (it == end) {
-                    // Поток закончился до того, как встретили закрывающую кавычку?
                     throw ParsingError("String parsing error");
                 }
                 const char ch = *it;
                 if (ch == '"') {
-                    // Встретили закрывающую кавычку
                     ++it;
                     break;
                 } else if (ch == '\\') {
-                    // Встретили начало escape-последовательности
                     ++it;
                     if (it == end) {
-                        // Поток завершился сразу после символа обратной косой черты
                         throw ParsingError("String parsing error");
                     }
                     const char escaped_char = *(it);
-                    // Обрабатываем одну из последовательностей: \\, \n, \t, \r, \"
                     switch (escaped_char) {
                         case 'n':
                             s.push_back('\n');
@@ -213,14 +190,11 @@ namespace json {
                             s.push_back('\\');
                             break;
                         default:
-                            // Встретили неизвестную escape-последовательность
                             throw ParsingError("Unrecognized escape sequence \\"s + escaped_char);
                     }
                 } else if (ch == '\n' || ch == '\r') {
-                    // Строковый литерал внутри- JSON не может прерываться символами \r или \n
                     throw ParsingError("Unexpected end of line"s);
                 } else {
-                    // Просто считываем очередной символ и помещаем его в результирующую строку
                     s.push_back(ch);
                 }
                 ++it;
@@ -309,7 +283,6 @@ namespace json {
             std::string res;
             char c;
 
-            //определяю сколько символов считывать
             c = static_cast<char>(input.peek());
             int length = c == 't' ? 4 : 5;
 
@@ -340,13 +313,13 @@ namespace json {
                 return LoadDict(input);
             } else if (c == '"') {
                 return LoadStr(input);
-            } else if (c == 't') { // true
+            } else if (c == 't') {
                 input.putback(c);
                 return LoadBool(input);
-            } else if (c == 'f') { // false
+            } else if (c == 'f') {
                 input.putback(c);
                 return LoadBool(input);
-            } else if (c == 'n') { // null
+            } else if (c == 'n') {
                 input.putback(c);
                 return LoadNull(input);
             } else {
@@ -355,7 +328,7 @@ namespace json {
             }
         }
 
-    } // namespace
+    }
 
     Document::Document(Node root)
             : root_(move(root)) {
@@ -379,9 +352,6 @@ namespace json {
 
     namespace {
 
-// -------------------------- печать нод ----------------------------
-
-// Контекст вывода, хранит ссылку на поток вывода и текущий отсуп
         struct PrintContext {
             std::ostream &out;
             int indent_step = 4;
@@ -393,7 +363,6 @@ namespace json {
                 }
             }
 
-            // Возвращает новый контекст вывода с увеличенным смещением
             PrintContext Indented() const {
                 return {out, indent_step, indent_step + indent};
             }
@@ -417,7 +386,6 @@ namespace json {
                         out << "\\n"sv;
                         break;
                     case '"':
-                        // Символы " и \ выводятся как \" или \\, соответственно
                         [[fallthrough]];
                     case '\\':
                         out.put('\\');
@@ -491,10 +459,9 @@ namespace json {
             std::visit([&ctx](const auto &value) { PrintValue(value, ctx); }, node.GetValue());
         }
 
-    } // namespace
+    }
 
     void Print(const Document &doc, std::ostream &output) {
         PrintNode(doc.GetRoot(), PrintContext{output});
     }
-
-} // namespace json
+}

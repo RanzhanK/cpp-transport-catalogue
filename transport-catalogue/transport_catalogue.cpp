@@ -20,7 +20,7 @@ namespace transport_catalogue {
         bus_buf->route_length = GetDistanceToBus(bus_buf);
     }
 
-    const Bus *TransportCatalogue::FindBus(const std::string_view bus_name) {
+    const Bus *TransportCatalogue::FindBus(std::string_view bus_name) {
         if (name_to_bus_.empty()) {
             return nullptr;
         }
@@ -33,7 +33,7 @@ namespace transport_catalogue {
         }
     }
 
-    const Stop *TransportCatalogue::FindStop(const std::string_view stop_name) {
+    const Stop *TransportCatalogue::FindStop(std::string_view stop_name) {
         if (name_to_stop_.empty()) {
             return nullptr;
         }

@@ -5,7 +5,13 @@
 #include "request_handler.h"
 #include "transport_catalogue.h"
 
-namespace json {
+namespace transport_catalogue::json {
+
+    struct StatRequest {
+        int id;
+        std::string type;
+        std::string name;
+    };
 
     struct BusQueryResult {
         std::string_view name;
@@ -36,7 +42,8 @@ namespace json {
 
         void ParseNodeRender(const Node &node, map_renderer::RenderSettings &render_settings);
 
-        void ParseNode(const Node &root, transport_catalogue::TransportCatalogue &catalogue, std::vector<StatRequest> &stat_request,
+        void ParseNode(const Node &root, transport_catalogue::TransportCatalogue &catalogue,
+                       std::vector<StatRequest> &stat_request,
                        map_renderer::RenderSettings &render_settings);
 
         void Parse(transport_catalogue::TransportCatalogue &catalogue, std::vector<StatRequest> &stat_request,
@@ -48,6 +55,12 @@ namespace json {
 
         std::vector<Distance> ParseNodeDistances(Node &node, transport_catalogue::TransportCatalogue &catalogue);
 
+        void ExecuteQueries(transport_catalogue::TransportCatalogue &catalogue, std::vector<StatRequest> &stat_requests,
+                            map_renderer::RenderSettings &render_settings);
+
+        const Document &GetDocument() const;
+
+    private:
         BusQueryResult BusQuery(transport_catalogue::TransportCatalogue &catalogue, std::string_view str);
 
         StopQueryResult StopQuery(transport_catalogue::TransportCatalogue &catalogue, std::string_view stop_name);
@@ -58,15 +71,10 @@ namespace json {
 
         Node ExecuteMakeNodeMap(int id_request, transport_catalogue::TransportCatalogue &catalogue, map_renderer::RenderSettings render_settings);
 
-        void ExecuteQueries(transport_catalogue::TransportCatalogue &catalogue, std::vector<StatRequest> &stat_requests,
-                            map_renderer::RenderSettings &render_settings);
-
         void ExecuteRenderMap(map_renderer::MapRenderer &map_catalogue, transport_catalogue::TransportCatalogue &catalogue_) const;
 
-        const Document &GetDocument() const;
-
-    private:
         Document document_;
+
         Document doc_out;
     };
 }

@@ -1,6 +1,6 @@
 #include "svg.h"
 
-namespace svg {
+namespace transport_catalogue::svg {
 
     using namespace std::literals;
 

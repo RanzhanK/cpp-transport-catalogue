@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-namespace geo {
+namespace transport_catalogue::geo {
 
     double compute_distance(Coordinates start, Coordinates end) {
         using namespace std;

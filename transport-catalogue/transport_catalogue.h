@@ -11,8 +11,6 @@
 
 #include "domain.h"
 
-using namespace domain;
-
 namespace transport_catalogue {
 
     class TransportCatalogue {
@@ -21,9 +19,9 @@ namespace transport_catalogue {
 
         void AddBus(Bus &&bus);
 
-        const Bus *FindBus(const std::string_view bus_name);
+        const Bus *FindBus(std::string_view bus_name);
 
-        const Stop *FindStop(const std::string_view stop_name);
+        const Stop *FindStop(std::string_view stop_name);
 
         void SetDistanceBetweenStops(const std::vector<Distance> &distances);
 

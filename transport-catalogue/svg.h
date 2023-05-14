@@ -9,7 +9,7 @@
 #include <iostream>
 #include <optional>
 
-namespace svg {
+namespace transport_catalogue::svg {
 
     class Rgb {
     public:
@@ -273,6 +273,5 @@ namespace svg {
         }
 
         void Render(std::ostream &out) const;
-
     };
 }

@@ -1,6 +1,6 @@
 #include "json_reader.h"
 
-namespace json {
+namespace transport_catalogue::json {
 
     JSONReader::JSONReader(Document doc) : document_(std::move(doc)) {}
 
@@ -10,8 +10,8 @@ namespace json {
         Stop stop;
         Dict stop_node;
 
-        if (node.IsMap()) {
-            stop_node = node.AsMap();
+        if (node.IsDict()) {
+            stop_node = node.AsDict();
             stop.name = stop_node.at("name").AsString();
             stop.latitude = stop_node.at("latitude").AsDouble();
             stop.longitude = stop_node.at("longitude").AsDouble();
@@ -27,12 +27,12 @@ namespace json {
         std::string last_name;
         int distance;
 
-        if (node.IsMap()) {
-            stop_node = node.AsMap();
+        if (node.IsDict()) {
+            stop_node = node.AsDict();
             begin_name = stop_node.at("name").AsString();
 
             try {
-                stop_road_map = stop_node.at("road_distances").AsMap();
+                stop_road_map = stop_node.at("road_distances").AsDict();
 
                 for (auto [key, value]: stop_road_map) {
                     last_name = key;
@@ -53,8 +53,8 @@ namespace json {
         Dict bus_node;
         Array bus_stops;
 
-        if (node.IsMap()) {
-            bus_node = node.AsMap();
+        if (node.IsDict()) {
+            bus_node = node.AsDict();
             bus.name = bus_node.at("name").AsString();
             bus.is_roundtrip = bus_node.at("is_roundtrip").AsBool();
 
@@ -94,8 +94,8 @@ namespace json {
             base_requests = root.AsArray();
 
             for (Node &node: base_requests) {
-                if (node.IsMap()) {
-                    req_map = node.AsMap();
+                if (node.IsDict()) {
+                    req_map = node.AsDict();
 
                     try {
                         req_node = req_map.at("type");
@@ -144,8 +144,8 @@ namespace json {
 
             for (Node req_node: stat_requests) {
 
-                if (req_node.IsMap()) {
-                    req_map = req_node.AsMap();
+                if (req_node.IsDict()) {
+                    req_map = req_node.AsDict();
                     req.id = req_map.at("id").AsInt();
                     req.type = req_map.at("type").AsString();
 
@@ -176,8 +176,8 @@ namespace json {
         uint8_t blue_;
         double opacity_;
 
-        if (node.IsMap()) {
-            rend_map = node.AsMap();
+        if (node.IsDict()) {
+            rend_map = node.AsDict();
 
             try {
                 rend_set.width_ = rend_map.at("width").AsDouble();
@@ -266,8 +266,8 @@ namespace json {
                                map_renderer::RenderSettings &render_settings) {
         Dict root_dictionary;
 
-        if (root.IsMap()) {
-            root_dictionary = root.AsMap();
+        if (root.IsDict()) {
+            root_dictionary = root.AsDict();
 
             try {
                 ParseNodeBase(root_dictionary.at("base_requests"), catalogue);

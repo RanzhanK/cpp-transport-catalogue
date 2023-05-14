@@ -6,7 +6,7 @@
 #include <variant>
 #include <iostream>
 
-namespace json {
+namespace transport_catalogue::json {
 
     class Node;
 
@@ -25,12 +25,9 @@ namespace json {
 
         using Value = variant;
 
-        Node(Value& value);
-
-
         const Array &AsArray() const;
 
-        const Dict &AsMap() const;
+        const Dict &AsDict() const;
 
         int AsInt() const;
 
@@ -55,7 +52,7 @@ namespace json {
 
         bool IsArray() const;
 
-        bool IsMap() const;
+        bool IsDict() const;
 
         Value& GetValue();
 
@@ -83,5 +80,4 @@ namespace json {
     Document Load(std::istream& input);
 
     void Print(const Document& doc, std::ostream& output);
-
 }

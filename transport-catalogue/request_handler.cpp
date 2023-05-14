@@ -1,6 +1,6 @@
 #include "request_handler.h"
 
-namespace request_handler {
+namespace transport_catalogue::request_handler {
 
     std::vector<geo::Coordinates> RequestHandler::GetStopsCoordinates(TransportCatalogue &catalogue_) {
 

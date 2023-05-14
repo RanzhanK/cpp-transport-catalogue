@@ -13,7 +13,6 @@ int main() {
     json_reader = JSONReader(std::cin);
     json_reader.Parse(catalogue, stat_request, render_settings);
 
-    request_handler = request_handler::RequestHandler();
     json_reader.ExecuteQueries(catalogue, stat_request, render_settings);
     json::Print(json_reader.GetDocument(), std::cout);
 }

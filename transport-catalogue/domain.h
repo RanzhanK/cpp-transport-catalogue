@@ -6,13 +6,7 @@
 
 #include "geo.h"
 
-namespace domain {
-
-    struct StatRequest {
-        int id;
-        std::string type;
-        std::string name;
-    };
+namespace transport_catalogue {
 
     struct Bus;
 
