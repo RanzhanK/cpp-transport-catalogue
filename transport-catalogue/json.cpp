@@ -2,7 +2,7 @@
 
 using namespace std::literals;
 
-namespace transport_catalogue::json {
+namespace json {
 
     bool Node::IsInt() const {
         return std::holds_alternative<int>(*this);

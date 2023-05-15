@@ -1,6 +1,6 @@
 #include "json_reader.h"
 
-namespace transport_catalogue::json {
+namespace json {
 
     JSONReader::JSONReader(Document doc) : document_(std::move(doc)) {}
 
@@ -300,61 +300,87 @@ namespace transport_catalogue::json {
                   render_settings);
     }
 
-    Node JSONReader::ExecuteMakeNodeStop(int id_request, StopQueryResult stop_info) {
-        Dict result;
+    Node JSONReader::ExecuteMakeNodeStop(int id_request, const StopQueryResult &stop_info) {
+        Node result;
         Array buses;
+        //json::builder::Builder builder;
+        json::Builder builder;
+
         std::string str_not_found = "not found";
 
         if (stop_info.not_found) {
-            result.emplace("request_id", Node(id_request));
-            result.emplace("error_message", Node(str_not_found));
+            builder.StartDict()
+                    .Key("request_id").Value(id_request)
+                    .Key("error_message").Value(str_not_found)
+                    .EndDict();
+
+            result = builder.Build();
 
         } else {
-            result.emplace("request_id", Node(id_request));
+            builder.StartDict()
+                    .Key("request_id").Value(id_request)
+                    .Key("buses").StartArray();
 
-            for (std::string bus_name: stop_info.buses_name) {
-                buses.push_back(Node(bus_name));
+            for (std::string bus_name : stop_info.buses_name) {
+                builder.Value(bus_name);
             }
 
-            result.emplace("buses", Node(buses));
+            builder.EndArray().EndDict();
+
+            result = builder.Build();
         }
 
-        return Node(result);
+        return result;
     }
 
-    Node JSONReader::ExecuteMakeNodeBus(int id_request, BusQueryResult bus_info) {
-        Dict result;
+    Node JSONReader::ExecuteMakeNodeBus(int id_request, const BusQueryResult &bus_info) {
+        Node result;
         std::string str_not_found = "not found";
 
         if (bus_info.not_found) {
-            result.emplace("request_id", Node(id_request));
-            result.emplace("error_message", Node(str_not_found));
+            result = json::Builder{}.StartDict()
+            //result = json::builder::Builder{}.StartDict()
+                    .Key("request_id").Value(id_request)
+                    .Key("error_message").Value(str_not_found)
+                    .EndDict()
+                    .Build();
         } else {
-            result.emplace("request_id", Node(id_request));
-            result.emplace("curvature", Node(bus_info.curvature));
-            result.emplace("route_length", Node(bus_info.route_length));
-            result.emplace("stop_count", Node(bus_info.stops_on_route));
-            result.emplace("unique_stop_count", Node(bus_info.unique_stops));
+            result = json::Builder{}.StartDict()
+            //result = json::builder::Builder{}.StartDict()
+                    .Key("request_id").Value(id_request)
+                    .Key("curvature").Value(bus_info.curvature)
+                    .Key("route_length").Value(bus_info.route_length)
+                    .Key("stop_count").Value(bus_info.stops_on_route)
+                    .Key("unique_stop_count").Value(bus_info.unique_stops)
+                    .EndDict()
+                    .Build();
         }
 
-        return Node(result);
+        return result;
     }
 
     Node JSONReader::ExecuteMakeNodeMap(int id_request, transport_catalogue::TransportCatalogue &catalogue_, map_renderer::RenderSettings render_settings) {
-        Dict result;
+        Node result;
+
         std::ostringstream map_stream;
         std::string map_str;
 
-        map_renderer::MapRenderer map_catalogue(render_settings);
+        MapRenderer map_catalogue(render_settings);
+
         map_catalogue.InitSphereProjector(request_handler::RequestHandler::GetStopsCoordinates(catalogue_));
+
         ExecuteRenderMap(map_catalogue, catalogue_);
         map_catalogue.GetStreamMap(map_stream);
         map_str = map_stream.str();
 
-        result.emplace("request_id", Node(id_request));
-        result.emplace("map", Node(map_str));
+        result = json::Builder{}.StartDict()
+        //result = json::builder::Builder{}.StartDict()
+                .Key("request_id").Value(id_request)
+                .Key("map").Value(map_str)
+                .EndDict()
+                .Build();
 
-        return Node(result);
+        return result;
     }
 
     void JSONReader::ExecuteQueries(transport_catalogue::TransportCatalogue &catalogue, std::vector<StatRequest> &stat_requests,

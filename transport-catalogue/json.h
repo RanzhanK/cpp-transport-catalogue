@@ -6,7 +6,7 @@
 #include <variant>
 #include <iostream>
 
-namespace transport_catalogue::json {
+namespace json {
 
     class Node;
 

@@ -5,8 +5,8 @@
 #include "transport_catalogue.h"
 
 using namespace transport_catalogue::map_renderer;
-using namespace transport_catalogue::json;
 using namespace transport_catalogue;
+using namespace json;
 
 namespace transport_catalogue::request_handler {
 

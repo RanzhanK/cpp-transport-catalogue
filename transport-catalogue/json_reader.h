@@ -1,11 +1,11 @@
 #pragma once
 
-#include "json.h"
 #include "map_renderer.h"
+#include "json_builder.h"
 #include "request_handler.h"
 #include "transport_catalogue.h"
 
-namespace transport_catalogue::json {
+namespace json {
 
     struct StatRequest {
         int id;
@@ -65,13 +65,15 @@ namespace transport_catalogue::json {
 
         StopQueryResult StopQuery(transport_catalogue::TransportCatalogue &catalogue, std::string_view stop_name);
 
-        Node ExecuteMakeNodeStop(int id_request, StopQueryResult query_result);
+        Node ExecuteMakeNodeStop(int id_request, const StopQueryResult &query_result);
 
-        Node ExecuteMakeNodeBus(int id_request, BusQueryResult query_result);
+        Node ExecuteMakeNodeBus(int id_request, const BusQueryResult &query_result);
 
-        Node ExecuteMakeNodeMap(int id_request, transport_catalogue::TransportCatalogue &catalogue, map_renderer::RenderSettings render_settings);
+        Node ExecuteMakeNodeMap(int id_request, transport_catalogue::TransportCatalogue &catalogue,
+                                map_renderer::RenderSettings render_settings);
 
-        void ExecuteRenderMap(map_renderer::MapRenderer &map_catalogue, transport_catalogue::TransportCatalogue &catalogue_) const;
+        void ExecuteRenderMap(map_renderer::MapRenderer &map_catalogue,
+                              transport_catalogue::TransportCatalogue &catalogue_) const;
 
         Document document_;
 

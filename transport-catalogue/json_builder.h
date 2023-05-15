@@ -1,102 +1,117 @@
-#pragma once
-
-#include <stack>
-#include <string>
-#include <memory>
-
 #include "json.h"
 
-namespace transport_catalogue::json {
-    namespace builder {
+namespace json {
+
+    class Builder {
+        class BaseContext;
 
         class KeyContext;
+
+        class ValueContext;
 
         class DictionaryContext;
 
         class ArrayContext;
 
-        class Builder {
-        public:
-            Node MakeNode(const Node::Value &value_);
+    public:
+        Builder();
 
-            void AddNode(const Node &node);
+        KeyContext Key(std::string key);
 
-            KeyContext Key(const std::string &key_);
+        Builder &Value(Node value);
 
-            Builder &Value(const Node::Value &value);
+        DictionaryContext StartDict();
 
-            DictionaryContext StartDict();
+        Builder &EndDict();
 
-            Builder &EndDict();
+        ArrayContext StartArray();
 
-            ArrayContext StartArray();
+        Builder &EndArray();
 
-            Builder &EndArray();
+        Node Build();
 
-            Node Build();
+    private:
+        Node root_;
+        std::vector<Node *> nodes_stack_;
 
-        private:
-            Node root_;
-            std::vector<std::unique_ptr<Node>> nodes_stack_;
+        template<typename T>
+        void InputResult(T elem) {
+            if (nodes_stack_.back()->IsArray()) {
+                const_cast<Array &>(nodes_stack_.back()->AsArray()).push_back(elem);
+                nodes_stack_.emplace_back(&const_cast<Array &>(nodes_stack_.back()->AsArray()).back());
+            } else {
+                *nodes_stack_.back() = elem;
+            }
+        }
+    };
 
-        };
+    class Builder::BaseContext {
+    public:
+        BaseContext(Builder &builder) : builder_(builder) {};
 
-        class BaseContext {
-        public:
-            BaseContext(Builder &builder);
+        KeyContext Key(std::string key);
 
-            KeyContext Key(const std::string &key);
+        Builder &Value(Node value);
 
-            Builder &Value(const Node::Value &value);
+        DictionaryContext StartDict();
 
-            DictionaryContext StartDict();
+        Builder &EndDict();
 
-            Builder &EndDict();
+        ArrayContext StartArray();
 
-            ArrayContext StartArray();
+        Builder &EndArray();
 
-            Builder &EndArray();
+    private:
+        Builder &builder_;
+    };
 
-        protected:
-            Builder &builder_;
+    class Builder::KeyContext : public BaseContext {
+    public:
+        KeyContext(Builder &builder) : BaseContext(builder) {};
 
-        };
+        KeyContext Key(std::string key) = delete;
 
-        class KeyContext : public BaseContext {
-        public:
-            KeyContext(Builder &builder);
+        Builder &EndDict() = delete;
 
-            KeyContext Key(const std::string &key) = delete;
+        Builder &EndArray() = delete;
 
-            BaseContext EndDict() = delete;
+        ValueContext Value(Node value);
+    };
 
-            BaseContext EndArray() = delete;
+    class Builder::ValueContext : public BaseContext {
+    public:
+        ValueContext(Builder &builder) : BaseContext(builder) {};
 
-            DictionaryContext Value(const Node::Value &value);
-        };
+        Builder &Value(Node value) = delete;
 
-        class DictionaryContext : public BaseContext {
-        public:
-            DictionaryContext(Builder &builder);
+        DictionaryContext StartDict() = delete;
 
-            DictionaryContext StartDict() = delete;
+        ArrayContext StartArray() = delete;
 
-            ArrayContext StartArray() = delete;
+        Builder &EndArray() = delete;
+    };
 
-            Builder &EndArray() = delete;
+    class Builder::DictionaryContext : public BaseContext {
+    public:
+        DictionaryContext(Builder &builder) : BaseContext(builder) {};
 
-            Builder &Value(const Node::Value &value) = delete;
-        };
+        DictionaryContext StartDict() = delete;
 
-        class ArrayContext : public BaseContext {
-        public:
-            ArrayContext(Builder &builder);
+        ArrayContext StartArray() = delete;
 
-            KeyContext Key(const std::string &key) = delete;
+        Builder &Value(Node value) = delete;
 
-            Builder &EndDict() = delete;
+        Builder &EndArray() = delete;
+    };
 
-            ArrayContext Value(const Node::Value &value);
-        };
-    }
+    class Builder::ArrayContext : public BaseContext {
+    public:
+        ArrayContext(Builder &builder) : BaseContext(builder) {};
+
+        KeyContext Key(std::string key) = delete;
+
+        Builder &EndDict() = delete;
+
+        ArrayContext Value(Node value) { return BaseContext::Value(std::move(value)); }
+    };
 }
