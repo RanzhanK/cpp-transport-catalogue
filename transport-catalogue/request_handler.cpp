@@ -2,6 +2,17 @@
 
 namespace transport_catalogue::request_handler {
 
+    std::optional<RouteInfo> RequestHandler::GetRouteInfo(std::string_view start,
+                                                          std::string_view end,
+                                                          TransportCatalogue &catalogue,
+                                                          transport_catalogue::detail::router::TransportRouter &routing) {
+
+
+        return routing.GetRouteInfo(
+                routing.GetRouterByStop(const_cast<Stop *>(catalogue.FindStop(start)))->bus_wait_start,
+                routing.GetRouterByStop(const_cast<Stop *>(catalogue.FindStop(end)))->bus_wait_start);
+    }
+
     std::vector<geo::Coordinates> RequestHandler::GetStopsCoordinates(TransportCatalogue &catalogue_) {
 
         std::vector<geo::Coordinates> stops_coordinates;

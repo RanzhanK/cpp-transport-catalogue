@@ -24,4 +24,6 @@ add_executable(cpp_transport_catalogue
         transport-catalogue/svg.h
         transport-catalogue/svg.cpp
         transport-catalogue/transport_catalogue.cpp
-        transport-catalogue/transport_catalogue.h)
+        transport-catalogue/transport_catalogue.h
+        transport-catalogue/transport_router.cpp
+        transport-catalogue/transport_router.h)

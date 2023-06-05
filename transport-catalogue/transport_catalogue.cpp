@@ -25,10 +25,9 @@ namespace transport_catalogue {
             return nullptr;
         }
 
-        try {
+        if (name_to_bus_.count(bus_name)) {
             return name_to_bus_.at(bus_name);
-        }
-        catch (const std::out_of_range &e) {
+        } else {
             return nullptr;
         }
     }
@@ -38,9 +37,9 @@ namespace transport_catalogue {
             return nullptr;
         }
 
-        try {
+        if (name_to_stop_.count(stop_name)) {
             return name_to_stop_.at(stop_name);
-        } catch (const std::out_of_range &e) {
+        } else {
             return nullptr;
         }
     }
@@ -60,25 +59,27 @@ namespace transport_catalogue {
         return unique_stops;
     }
 
-    size_t TransportCatalogue::GetDistanceBetweenStops(const Stop *stop1, const Stop *stop2) const{
+    size_t TransportCatalogue::GetDistanceBetweenStops(const Stop *stop1, const Stop *stop2) const {
+
         if (distance_to_stop.empty()) {
             return 0;
-        }
 
-        try {
+        } else {
 
-            auto dist_pair = std::make_pair(stop1, stop2);
-            return distance_to_stop.at(dist_pair);
+            if (const auto &dist_pair = std::make_pair(stop1, stop2);
+                    distance_to_stop.count(dist_pair)) {
 
-        } catch (const std::out_of_range &e) {
-
-            try {
-                auto dist_pair = std::make_pair(stop2, stop1);
                 return distance_to_stop.at(dist_pair);
-            } catch (const std::out_of_range &e) {
+
+            } else if (const auto &dist_pair = std::make_pair(stop2, stop1);
+                    distance_to_stop.count(dist_pair)) {
+
+                return distance_to_stop.at(dist_pair);
+
+            } else {
+
                 return 0;
             }
-
         }
     }
 

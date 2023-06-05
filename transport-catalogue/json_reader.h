@@ -3,6 +3,7 @@
 #include "map_renderer.h"
 #include "json_builder.h"
 #include "request_handler.h"
+#include "transport_router.h"
 #include "transport_catalogue.h"
 
 namespace json {
@@ -11,6 +12,8 @@ namespace json {
         int id;
         std::string type;
         std::string name;
+        std::string from;
+        std::string to;
     };
 
     struct BusQueryResult {
@@ -42,12 +45,14 @@ namespace json {
 
         void ParseNodeRender(const Node &node, map_renderer::RenderSettings &render_settings);
 
+        void ParseNodeRouting(const Node &node, RoutingSettings &route_set);
+
         void ParseNode(const Node &root, transport_catalogue::TransportCatalogue &catalogue,
                        std::vector<StatRequest> &stat_request,
-                       map_renderer::RenderSettings &render_settings);
+                       map_renderer::RenderSettings &render_settings, RoutingSettings &routing_settings);
 
         void Parse(transport_catalogue::TransportCatalogue &catalogue, std::vector<StatRequest> &stat_request,
-                   map_renderer::RenderSettings &render_settings);
+                   map_renderer::RenderSettings &render_settings, RoutingSettings &routing_settings);
 
         Stop ParseNodeStop(Node &node);
 
@@ -56,7 +61,7 @@ namespace json {
         std::vector<Distance> ParseNodeDistances(Node &node, transport_catalogue::TransportCatalogue &catalogue);
 
         void ExecuteQueries(transport_catalogue::TransportCatalogue &catalogue, std::vector<StatRequest> &stat_requests,
-                            map_renderer::RenderSettings &render_settings);
+                            map_renderer::RenderSettings &render_settings, RoutingSettings &routing_settings);
 
         const Document &GetDocument() const;
 
@@ -70,7 +75,11 @@ namespace json {
         Node ExecuteMakeNodeBus(int id_request, const BusQueryResult &query_result);
 
         Node ExecuteMakeNodeMap(int id_request, transport_catalogue::TransportCatalogue &catalogue,
-                                map_renderer::RenderSettings render_settings);
+                                const map_renderer::RenderSettings& render_settings);
+
+        Node ExecuteMakeNodeRoute(StatRequest &request,
+                                  TransportCatalogue &catalogue,
+                                  transport_catalogue::detail::router::TransportRouter &routing);
 
         void ExecuteRenderMap(map_renderer::MapRenderer &map_catalogue,
                               transport_catalogue::TransportCatalogue &catalogue_) const;
