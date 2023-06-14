@@ -83,11 +83,11 @@ namespace transport_catalogue {
         }
     }
 
-    std::unordered_map<std::string_view, Bus *> TransportCatalogue::GetAllBuses() const {
+    std::unordered_map<std::string_view, Bus *> const& TransportCatalogue::GetAllBuses() const {
         return name_to_bus_;
     }
 
-    std::unordered_map<std::string_view, Stop *> TransportCatalogue::GetAllStops() const {
+    std::unordered_map<std::string_view, Stop *> const& TransportCatalogue::GetAllStops() const {
         return name_to_stop_;
     }
 

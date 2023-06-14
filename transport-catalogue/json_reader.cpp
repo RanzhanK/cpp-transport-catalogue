@@ -4,7 +4,7 @@ namespace json {
 
     struct EdgeInfoGetter {
 
-        Node operator()(const StopEdge &edge_info) {
+        Node operator()(const transport_catalogue::router::StopEdge &edge_info) {
             using namespace std::literals;
 
             return Builder{}.StartDict()
@@ -15,7 +15,7 @@ namespace json {
                     .Build();
         }
 
-        Node operator()(const BusEdge &edge_info) {
+        Node operator()(const transport_catalogue::router::BusEdge &edge_info) {
             using namespace std::literals;
 
             return Builder{}.StartDict()
@@ -298,7 +298,7 @@ namespace json {
         }
     }
 
-    void JSONReader::ParseNodeRouting(const Node &node, RoutingSettings &route_set) {
+    void JSONReader::ParseNodeRouting(const Node &node, transport_catalogue::router::RoutingSettings &route_set) {
         Dict route;
 
         if (node.IsDict()) {
@@ -321,7 +321,7 @@ namespace json {
 
     void JSONReader::ParseNode(const Node &root, transport_catalogue::TransportCatalogue &catalogue,
                                std::vector<StatRequest> &stat_request,
-                               map_renderer::RenderSettings &render_settings, RoutingSettings &routing_settings) {
+                               map_renderer::RenderSettings &render_settings, transport_catalogue::router::RoutingSettings &routing_settings) {
         Dict root_dictionary;
 
         if (root.IsDict()) {
@@ -357,7 +357,7 @@ namespace json {
     }
 
     void JSONReader::Parse(transport_catalogue::TransportCatalogue &catalogue, std::vector<StatRequest> &stat_request,
-                           map_renderer::RenderSettings &render_settings, RoutingSettings &routing_settings) {
+                           map_renderer::RenderSettings &render_settings, transport_catalogue::router::RoutingSettings &routing_settings) {
         ParseNode(document_.GetRoot(),
                   catalogue,
                   stat_request,
@@ -447,7 +447,7 @@ namespace json {
 
     Node JSONReader::ExecuteMakeNodeRoute(StatRequest &request,
                                           TransportCatalogue &catalogue,
-                                          transport_catalogue::detail::router::TransportRouter &routing) {
+                                          transport_catalogue::router::TransportRouter &routing) {
         const auto &route_info = request_handler::RequestHandler::GetRouteInfo(request.from, request.to, catalogue,
                                                                                routing);
 
@@ -475,9 +475,9 @@ namespace json {
     void JSONReader::ExecuteQueries(transport_catalogue::TransportCatalogue &catalogue,
                                     std::vector<StatRequest> &stat_requests,
                                     map_renderer::RenderSettings &render_settings,
-                                    RoutingSettings &routing_settings) {
+                                    transport_catalogue::router::RoutingSettings &routing_settings) {
         std::vector<Node> result_request;
-        transport_catalogue::detail::router::TransportRouter routing;
+        transport_catalogue::router::TransportRouter routing;
 
         routing.SetRoutingSettings(routing_settings);
         routing.BuildRoute(catalogue);

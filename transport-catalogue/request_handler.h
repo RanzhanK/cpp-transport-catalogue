@@ -13,10 +13,10 @@ namespace transport_catalogue::request_handler {
 
     class RequestHandler {
     public:
-        static std::optional<RouteInfo> GetRouteInfo(std::string_view start,
+        static std::optional<transport_catalogue::router::RouteInfo> GetRouteInfo(std::string_view start,
                                                      std::string_view end,
                                                      TransportCatalogue &catalogue,
-                                                     transport_catalogue::detail::router::TransportRouter &routing);
+                                                     transport_catalogue::router::TransportRouter &routing);
 
         static std::vector<geo::Coordinates> GetStopsCoordinates(TransportCatalogue &catalogue_);
 

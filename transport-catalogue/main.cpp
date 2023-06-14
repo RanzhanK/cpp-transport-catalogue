@@ -6,7 +6,7 @@ int main() {
     std::vector<StatRequest> stat_request;
     RenderSettings render_settings;
     TransportCatalogue catalogue;
-    RoutingSettings routing_settings;
+    transport_catalogue::router::RoutingSettings routing_settings;
 
     JSONReader json_reader;
     request_handler::RequestHandler request_handler;

@@ -2,10 +2,10 @@
 
 namespace transport_catalogue::request_handler {
 
-    std::optional<RouteInfo> RequestHandler::GetRouteInfo(std::string_view start,
+    std::optional<transport_catalogue::router::RouteInfo> RequestHandler::GetRouteInfo(std::string_view start,
                                                           std::string_view end,
                                                           TransportCatalogue &catalogue,
-                                                          transport_catalogue::detail::router::TransportRouter &routing) {
+                                                          transport_catalogue::router::TransportRouter &routing) {
 
 
         return routing.GetRouteInfo(

@@ -34,8 +34,7 @@ namespace json {
         Node root_;
         std::vector<Node *> nodes_stack_;
 
-        template<typename T>
-        void InputResult(T elem) {
+        void InputResult(const Node& elem) {
             if (nodes_stack_.back()->IsArray()) {
                 const_cast<Array &>(nodes_stack_.back()->AsArray()).push_back(elem);
                 nodes_stack_.emplace_back(&const_cast<Array &>(nodes_stack_.back()->AsArray()).back());

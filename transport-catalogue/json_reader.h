@@ -45,14 +45,14 @@ namespace json {
 
         void ParseNodeRender(const Node &node, map_renderer::RenderSettings &render_settings);
 
-        void ParseNodeRouting(const Node &node, RoutingSettings &route_set);
+        void ParseNodeRouting(const Node &node, transport_catalogue::router::RoutingSettings &route_set);
 
         void ParseNode(const Node &root, transport_catalogue::TransportCatalogue &catalogue,
                        std::vector<StatRequest> &stat_request,
-                       map_renderer::RenderSettings &render_settings, RoutingSettings &routing_settings);
+                       map_renderer::RenderSettings &render_settings, transport_catalogue::router::RoutingSettings &routing_settings);
 
         void Parse(transport_catalogue::TransportCatalogue &catalogue, std::vector<StatRequest> &stat_request,
-                   map_renderer::RenderSettings &render_settings, RoutingSettings &routing_settings);
+                   map_renderer::RenderSettings &render_settings, transport_catalogue::router::RoutingSettings &routing_settings);
 
         Stop ParseNodeStop(Node &node);
 
@@ -61,7 +61,7 @@ namespace json {
         std::vector<Distance> ParseNodeDistances(Node &node, transport_catalogue::TransportCatalogue &catalogue);
 
         void ExecuteQueries(transport_catalogue::TransportCatalogue &catalogue, std::vector<StatRequest> &stat_requests,
-                            map_renderer::RenderSettings &render_settings, RoutingSettings &routing_settings);
+                            map_renderer::RenderSettings &render_settings, transport_catalogue::router::RoutingSettings &routing_settings);
 
         const Document &GetDocument() const;
 
@@ -79,7 +79,7 @@ namespace json {
 
         Node ExecuteMakeNodeRoute(StatRequest &request,
                                   TransportCatalogue &catalogue,
-                                  transport_catalogue::detail::router::TransportRouter &routing);
+                                  transport_catalogue::router::TransportRouter &routing);
 
         void ExecuteRenderMap(map_renderer::MapRenderer &map_catalogue,
                               transport_catalogue::TransportCatalogue &catalogue_) const;

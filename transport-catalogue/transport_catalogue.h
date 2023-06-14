@@ -29,9 +29,9 @@ namespace transport_catalogue {
 
         std::unordered_set<const Bus *> GetBusesForStop(const Stop *stop);
 
-        std::unordered_map<std::string_view, Bus *> GetAllBuses() const;
+        std::unordered_map<std::string_view, Bus *> const& GetAllBuses() const;
 
-        std::unordered_map<std::string_view, Stop *> GetAllStops() const;
+        std::unordered_map<std::string_view, Stop *> const& GetAllStops() const;
 
         std::unordered_set<const Stop *> GetUniqStops(const Bus *bus);
 
