@@ -3,6 +3,7 @@
 #include <deque>
 #include <string>
 #include <vector>
+#include <numeric>
 #include <iomanip>
 #include <iostream>
 #include <execution>
@@ -15,6 +16,16 @@ namespace transport_catalogue {
 
     class TransportCatalogue {
     public:
+        struct Hasher {
+            size_t operator()(const std::pair<const Stop *, const Stop *> &info_) const {
+                auto h1 = hasher_(info_.first->name);
+                auto h2 = hasher_(info_.second->name);
+                return 37 * h1 + h2;
+            }
+
+            std::hash<std::string> hasher_;
+        };
+
         void AddStop(Stop &&stop);
 
         void AddBus(Bus &&bus);
@@ -39,23 +50,20 @@ namespace transport_catalogue {
 
         size_t GetDistanceToBus(const Bus *bus);
 
+        using distances_ = std::unordered_map<std::pair<const Stop *, const Stop *>, int, Hasher>;
+
+        std::deque<Stop> GetStops() const;
+
+        std::deque<Bus> GetBuses() const;
+
+        distances_ GetDistance() const;
+
     private:
-        struct Hasher {
-            size_t operator()(const std::pair<const Stop *, const Stop *> &info_) const {
-                auto h1 = hasher_(info_.first->name);
-                auto h2 = hasher_(info_.second->name);
-                return 37 * h1 + h2;
-            }
-
-            std::hash<std::string> hasher_;
-        };
-
         std::deque<Stop> stops_;
         std::deque<Bus> buses_;
         std::unordered_map<std::string_view, Bus *> name_to_bus_;
         std::unordered_map<std::string_view, Stop *> name_to_stop_;
 
-        using distances_ = std::unordered_map<std::pair<const Stop *, const Stop *>, int, Hasher>;
         distances_ distance_to_stop;
     };
 }

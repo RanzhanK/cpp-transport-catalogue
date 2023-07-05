@@ -2,6 +2,7 @@
 
 #include "map_renderer.h"
 #include "json_builder.h"
+#include "serialization.h"
 #include "request_handler.h"
 #include "transport_router.h"
 #include "transport_catalogue.h"
@@ -47,12 +48,14 @@ namespace json {
 
         void ParseNodeRouting(const Node &node, transport_catalogue::router::RoutingSettings &route_set);
 
-        void ParseNode(const Node &root, transport_catalogue::TransportCatalogue &catalogue,
-                       std::vector<StatRequest> &stat_request,
-                       map_renderer::RenderSettings &render_settings, transport_catalogue::router::RoutingSettings &routing_settings);
+        void ParseNodeSerialization(const Node &node, serialization::SerializationSettings &serialization_set);
 
-        void Parse(transport_catalogue::TransportCatalogue &catalogue, std::vector<StatRequest> &stat_request,
-                   map_renderer::RenderSettings &render_settings, transport_catalogue::router::RoutingSettings &routing_settings);
+        void ParseNodeMakeBase(TransportCatalogue &catalogue, map_renderer::RenderSettings &render_settings,
+                               router::RoutingSettings &routing_settings,
+                               serialization::SerializationSettings &serialization_settings);
+
+        void ParseNodeProcessRequests(std::vector<StatRequest> &stat_request,
+                                      serialization::SerializationSettings &serialization_settings);
 
         Stop ParseNodeStop(Node &node);
 
@@ -61,7 +64,8 @@ namespace json {
         std::vector<Distance> ParseNodeDistances(Node &node, transport_catalogue::TransportCatalogue &catalogue);
 
         void ExecuteQueries(transport_catalogue::TransportCatalogue &catalogue, std::vector<StatRequest> &stat_requests,
-                            map_renderer::RenderSettings &render_settings, transport_catalogue::router::RoutingSettings &routing_settings);
+                            map_renderer::RenderSettings &render_settings,
+                            transport_catalogue::router::RoutingSettings &routing_settings);
 
         const Document &GetDocument() const;
 
@@ -75,7 +79,7 @@ namespace json {
         Node ExecuteMakeNodeBus(int id_request, const BusQueryResult &query_result);
 
         Node ExecuteMakeNodeMap(int id_request, transport_catalogue::TransportCatalogue &catalogue,
-                                const map_renderer::RenderSettings& render_settings);
+                                const map_renderer::RenderSettings &render_settings);
 
         Node ExecuteMakeNodeRoute(StatRequest &request,
                                   TransportCatalogue &catalogue,

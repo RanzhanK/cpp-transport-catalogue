@@ -120,4 +120,16 @@ namespace transport_catalogue {
         }
         return distance;
     }
+
+    std::deque<Stop> TransportCatalogue::GetStops() const {
+        return stops_;
+    }
+
+    std::deque<Bus> TransportCatalogue::GetBuses() const {
+        return buses_;
+    }
+
+    TransportCatalogue::distances_ TransportCatalogue::GetDistance() const {
+        return distance_to_stop;
+    }
 }
