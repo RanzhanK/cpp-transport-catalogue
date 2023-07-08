@@ -6,7 +6,7 @@ namespace serialization {
     uint32_t calculate_id(It start, It end, std::string_view name) {
 
         auto stop_it = std::find_if(start, end,
-                                    [&name](const transport_catalogue::Stop stop) { return stop.name == name; });
+                                    [&name](const transport_catalogue::Stop& stop) { return stop.name == name; });
         return std::distance(start, stop_it);
     }
 
@@ -99,7 +99,7 @@ namespace serialization {
         std::vector<transport_catalogue::Distance> distances;
         for (const auto &distance: distances_proto) {
 
-            transport_catalogue::Distance tc_distance;
+            transport_catalogue::Distance tc_distance{};
 
             tc_distance.start = transport_catalogue.FindStop(tc_stops[distance.start()].name);
             tc_distance.end = transport_catalogue.FindStop(tc_stops[distance.end()].name);
