@@ -2,8 +2,8 @@
 Реализация транспортного справочника. Получение и сохранение данных в формате JSON с использованием собственной библиотеки. Визуализация карты маршрутов в формате SVG с использованием собственной библиотеки. Поиск кратчайшего пути по заданным условиям на основе построенной карты маршрутов.
 
 # class TransportCatalogue
-transport_catalogue.h
-transport_catalogue.cpp
+transport_catalogue.h<br/>
+transport_catalogue.cpp<br/>
 Основные реализованные методы:
 
 -AddStop(const Stop&& stop) - добавление остановки в справочник<br/>
@@ -15,16 +15,16 @@ transport_catalogue.cpp
 -GetDistanceBtwStops(Stop* stop1, Stop* stop2) - получение расстояния между остановками<br/>
 
 # class TransportRouter
-transport_router.h
-transport_router.cpp
+transport_router.h<br/>
+transport_router.cpp<br/>
 Поиск кратчайшего расстояния между остановками
 
 # class JSONReader
-json_reader.h
-json_reader.cpp
+json_reader.h<br/>
+json_reader.cpp<br/>
 Чтение из потока ввода запросов на построение базы данных транспортного справочника, чтение запросов к транспортному справочнику, формирование ответов на полученные запросы в формате JSON
 
 # class MapRenderer
-map_renderer.h
-map_renderer.cpp
+map_renderer.h<br/>
+map_renderer.cpp<br/>
 Визуализация карты маршрутов в формате SVG
