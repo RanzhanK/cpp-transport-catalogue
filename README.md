@@ -5,7 +5,7 @@
 transport_catalogue.h<br/>
 transport_catalogue.cpp<br/>
 <br/>
-Основные реализованные методы:
+Основные реализованные методы:<br/>
 -AddStop(const Stop&& stop) - добавление остановки в справочник<br/>
 -AddBus(const Bus&& bus) - добавление автобусного маршрута в справочник<br/>
 -FindBus(const std::string_view name) - поиск автобуса по названию<br/>
