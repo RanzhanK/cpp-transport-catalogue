@@ -4,6 +4,7 @@
 # class TransportCatalogue
 transport_catalogue.h<br/>
 transport_catalogue.cpp<br/>
+<br/>
 Основные реализованные методы:
 
 -AddStop(const Stop&& stop) - добавление остановки в справочник<br/>
