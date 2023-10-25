@@ -6,13 +6,13 @@ transport_catalogue.h<br/>
 transport_catalogue.cpp<br/>
 <br/>
 Основные реализованные методы:<br/>
--AddStop(const Stop&& stop) - добавление остановки в справочник<br/>
--AddBus(const Bus&& bus) - добавление автобусного маршрута в справочник<br/>
--FindBus(const std::string_view name) - поиск автобуса по названию<br/>
--FindStop(const std::string_view name) - поиск остановки по названию<br/>
--GetBusesForStop(Stop* stop) - получения списка проходящих через остановку автобусных маршрутов<br/>
--AddDistances(std::pair<std::pair<Stop*, Stop*>, int>&& p) - добавление расстояний между остановками<br/>
--GetDistanceBtwStops(Stop* stop1, Stop* stop2) - получение расстояния между остановками<br/>
+- AddStop(const Stop&& stop) - добавление остановки в справочник<br/>
+- AddBus(const Bus&& bus) - добавление автобусного маршрута в справочник<br/>
+- FindBus(const std::string_view name) - поиск автобуса по названию<br/>
+- FindStop(const std::string_view name) - поиск остановки по названию<br/>
+- GetBusesForStop(Stop* stop) - получения списка проходящих через остановку автобусных маршрутов<br/>
+- AddDistances(std::pair<std::pair<Stop*, Stop*>, int>&& p) - добавление расстояний между остановками<br/>
+- GetDistanceBtwStops(Stop* stop1, Stop* stop2) - получение расстояния между остановками<br/>
 
 # class TransportRouter
 transport_router.h<br/>
